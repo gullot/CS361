@@ -12,13 +12,13 @@ def onDarkModeClick():
 
     if darkMode:
         root.configure(bg="#2E2E2E")
-        buttonColor = "#404040"
-        textColor = "white"
+        #buttonColor = "#404040"
+        #textColor = "white"
 
     else:
         root.configure(bg="white")
-        buttonColor = "lightgray"
-        textColor = "black"
+        #buttonColor = "lightgray"
+        #textColor = "black"
 
     #update widget colors
     #darkModeButton.configure(bg=buttonColor, fg=textColor)
