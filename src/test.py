@@ -50,6 +50,10 @@ def addFlight(window, flight):
 
 root = tk.Tk()
 root.title("Welcome to the Flight Tracker Tool!")
+titleFrame = tk.Frame(root)
+titleFrame.pack(pady=10)
+titleLabel = tk.Label(titleFrame, text="Click the buttons below to get started!")
+titleLabel.pack()
 root.geometry("1200x600")
 
 #dark mode off as default
