@@ -42,7 +42,20 @@ def onAddFlightClick():
     submitFlight.pack(pady=10)
 
 def addFlight(window, flight):
-    flightTable.insert("", tk.END, values=(flight, "13:00", "18:00"))
+
+    #ADD PIPE REQUEST HERE
+    with open("flight_num.txt", "w") as pipeRequest:
+        pipeRequest.write(flight)
+
+    #somehow wait for request?
+
+    with open("flight_details.txt", "r") as flightDetails:
+        arrival = flightDetails.read() #need to input key as json to get arrival only?
+        departure = flightDetails.read()
+        status = flightDetails.read()
+
+
+    flightTable.insert("", tk.END, values=(flight, arrival, departure, status)) #sstill need to add delete button in last column
     #close window
     window.destroy()
 
