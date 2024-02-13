@@ -5,6 +5,14 @@ from tkinter import ttk
 
 #########################################################
 
+def onEnter(event):
+    #to display information on hovering
+    deleteHoverLabel.place(x=trashButton.winfo_rootx(), y=trashButton.winfo_rooty())
+
+def onLeave(event):
+    #remove hover label
+    deleteHoverLabel.place_forget()
+
 def onDarkModeClick():
     #messagebox.showinfo("Clicked dark mode")
     global darkMode
@@ -63,6 +71,10 @@ def addFlight(window, flight):
 
 root = tk.Tk()
 root.title("Welcome to the Flight Tracker Tool!")
+titleFrame = tk.Frame(root)
+titleFrame.pack(pady=10)
+titleLabel = tk.Label(titleFrame, text="Click the buttons below to get started!")
+titleLabel.pack()
 root.geometry("1200x600")
 
 #dark mode off as default
@@ -72,6 +84,12 @@ buttonColor = "lightgray"
 textColor = "black"
 
 trashIcon = tk.PhotoImage(file="./assets/trash.png")
+trashButton = tk.Button(root, image=trashIcon)
+
+deleteHoverLabel = tk.Label(root, text="warning! this will delete a flight")
+trashButton.pack()
+trashButton.bind("<Enter>", onEnter)
+trashButton.bind("<Leave>", onLeave)
 
 darkModeButton = tk.Button(root, text="Dark Mode", command=onDarkModeClick, bg=backgroundColor, fg=textColor)
 darkModeButton.pack(padx=10, pady=10, anchor="nw")
