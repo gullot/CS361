@@ -62,6 +62,7 @@ def addFlight(window, flight):
     with open("response.txt", "r") as flightDetails:
         data = json.load(flightDetails)
 
+    #NEED TO FIX**********************************************************************************
     arrival = data['predicted_in']
     departure = data['predicted_out']
     status = data['status']
