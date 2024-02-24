@@ -4,7 +4,8 @@ from time import sleep
 import requests
 import json
 
-key = 'wGoGBLlJoPsdBTN7VGJVFuAYJTOqCkKl'
+#thomas' key
+key = '2iQIs1WfYcfWAFhfY5WAmpvlOlJGnGZY'
 url = 'https://aeroapi.flightaware.com/aeroapi/flights/'
 
 

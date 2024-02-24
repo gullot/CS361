@@ -2,6 +2,8 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
+from time import sleep
+import json
 
 #########################################################
 
@@ -52,15 +54,17 @@ def onAddFlightClick():
 def addFlight(window, flight):
 
     #ADD PIPE REQUEST HERE
-    with open("flight_num.txt", "w") as pipeRequest:
+    with open("request.txt", "w") as pipeRequest:
         pipeRequest.write(flight)
 
-    #somehow wait for request?
+    sleep(2)
 
-    with open("flight_details.txt", "r") as flightDetails:
-        arrival = flightDetails.read() #need to input key as json to get arrival only?
-        departure = flightDetails.read()
-        status = flightDetails.read()
+    with open("response.txt", "r") as flightDetails:
+        data = json.load(flightDetails)
+
+    arrival = data['predicted_in']
+    departure = data['predicted_out']
+    status = data['status']
 
 
     flightTable.insert("", tk.END, values=(flight, arrival, departure, status)) #sstill need to add delete button in last column
