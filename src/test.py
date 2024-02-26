@@ -59,15 +59,25 @@ def addFlight(window, flight):
     sleep(2)
 
     with open("response.txt", "r") as flightDetails:
-        data = json.load(flightDetails)
+        #print(flightDetails)
+        try:
+            data = json.load(flightDetails)
+        except json.JSONDecodeError as e:
+            print("inval syntax:", e)
 
-    #NEED TO FIX**********************************************************************************
-    arrival = data['predicted_in']
-    departure = data['predicted_out']
-    status = data['status']
+    if "Error" in data:
+        #MAKE A FUNCTION FOR A POPUP FOR FAILURE
+        return
+
+    arrival = data["flights"][0]["scheduled_in"]
+    departure = data["flights"][0]["scheduled_out"]
+    status = data["flights"][0]["status"]
 
 
     flightTable.insert("", tk.END, values=(flight, arrival, departure, status)) #sstill need to add delete button in last column
+    #clear response file
+    with open("response.txt", "w"):
+        pass
     #close window
     window.destroy()
 
