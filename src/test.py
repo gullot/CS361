@@ -16,7 +16,6 @@ def onLeave(event):
     deleteHoverLabel.place_forget()
 
 def onDarkModeClick():
-    #messagebox.showinfo("Clicked dark mode")
     global darkMode
     darkMode = not darkMode
 
@@ -53,7 +52,7 @@ def onAddFlightClick():
 
 def addFlight(window, flight):
 
-    #ADD PIPE REQUEST HERE
+    #request to microservice for information regarding flight
     with open("request.txt", "w") as pipeRequest:
         pipeRequest.write(flight)
 
