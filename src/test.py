@@ -50,23 +50,41 @@ def onAddFlightClick():
     submitFlight = tk.Button(flightWindow, text="Add Flight", command=lambda: addFlight(flightWindow, flight.get()))
     submitFlight.pack(pady=10)
 
+def popUpErr(msg):
+    popUp = tk.Toplevel()
+    popUp.title("Error")
+    label = tk.Label(popUp, text=msg)
+    label.pack(padx=10, pady=10)
+    button = tk.Button(popUp, text="OK", command=popUp.destroy)
+    button.pack(pady=10)
+
 def addFlight(window, flight):
 
     #request to microservice for information regarding flight
     with open("request.txt", "w") as pipeRequest:
         pipeRequest.write(flight)
 
-    sleep(2)
+    sleep(4)
 
     with open("response.txt", "r") as flightDetails:
-        #print(flightDetails)
         try:
             data = json.load(flightDetails)
         except json.JSONDecodeError as e:
-            print("inval syntax:", e)
+            popUpErr(e)
+            #print("inval syntax:", e)
+            window.destroy()
+            return
+
+    #check if flights is empty (problem with retrieval)
+    if not data["flights"]:
+        print("no data in flights key")
+        window.destroy()
+        return
 
     if "Error" in data:
         #MAKE A FUNCTION FOR A POPUP FOR FAILURE
+        print("error in return from api")
+        window.destroy()
         return
 
     arrival = data["flights"][0]["scheduled_in"]
@@ -76,8 +94,8 @@ def addFlight(window, flight):
 
     flightTable.insert("", tk.END, values=(flight, arrival, departure, status)) #sstill need to add delete button in last column
     #clear response file
-    with open("response.txt", "w"):
-        pass
+    #with open("response.txt", "w") as file:
+    #    file.write("")
     #close window
     window.destroy()
 
