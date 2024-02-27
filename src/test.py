@@ -21,17 +21,24 @@ def onDarkModeClick():
 
     if darkMode:
         root.configure(bg="#2E2E2E")
-        #buttonColor = "#404040"
-        #textColor = "white"
+        buttonColor = "#404040"
+        textColor = "white"
+        treeviewBg = "#1E1E1E"
+        treeviewFg = "white"
 
     else:
         root.configure(bg="white")
-        #buttonColor = "lightgray"
-        #textColor = "black"
+        buttonColor = "lightgray"
+        textColor = "black"
+        treeviewBg = "white"
+        treeviewFg = "black"
 
     #update widget colors
-    #darkModeButton.configure(bg=buttonColor, fg=textColor)
-    #flightTable.configure(style="Treeview", background=root.cget("bg"), foreground=textColor, fieldbackground=root.cget("bg"))
+    darkModeButton.configure(bg=buttonColor, fg=textColor)
+    addFlightButton.configure(bg=buttonColor, fg=textColor)
+    style = ttk.Style()
+    style.configure("Custom.Treeview", background=treeviewBg, foreground=treeviewFg)  # Reconfigure Treeview style
+    root.update_idletasks()
     
 
 def onAddFlightClick():
@@ -60,12 +67,13 @@ def popUpErr(msg):
 
 def addFlight(window, flight):
 
-    #request to microservice for information regarding flight
+    #send request to microservice for information regarding flight
     with open("request.txt", "w") as pipeRequest:
         pipeRequest.write(flight)
 
-    sleep(4)
+    sleep(3)
 
+    #help from https://www.geeksforgeeks.org/json-parsing-errors-in-python/
     with open("response.txt", "r") as flightDetails:
         try:
             data = json.load(flightDetails)
@@ -74,16 +82,18 @@ def addFlight(window, flight):
             #print("inval syntax:", e)
             window.destroy()
             return
-
-    #check if flights is empty (problem with retrieval)
-    if not data["flights"]:
-        print("no data in flights key")
+    
+    #check if microservice write "Error" as a key
+    if "Error" in data:
+        #print("error in return from api")
+        popUpErr("Error in return from API")
         window.destroy()
         return
-
-    if "Error" in data:
-        #MAKE A FUNCTION FOR A POPUP FOR FAILURE
-        print("error in return from api")
+    
+    #check if flights is empty (problem with retrieval)
+    if not data["flights"]:
+        #print("no data in flights key")
+        popUpErr("No data in flights key")
         window.destroy()
         return
 
@@ -91,17 +101,15 @@ def addFlight(window, flight):
     departure = data["flights"][0]["scheduled_out"]
     status = data["flights"][0]["status"]
 
-
     flightTable.insert("", tk.END, values=(flight, arrival, departure, status)) #sstill need to add delete button in last column
-    #clear response file
-    #with open("response.txt", "w") as file:
-    #    file.write("")
+
     #close window
     window.destroy()
 
 #########################################################################
 
 root = tk.Tk()
+root.configure(bg="white")
 root.title("Welcome to the Flight Tracker Tool!")
 titleFrame = tk.Frame(root)
 titleFrame.pack(pady=10)
@@ -114,6 +122,8 @@ darkMode = False
 backgroundColor = "white"
 buttonColor = "lightgray"
 textColor = "black"
+treeviewBg = "white"
+treeviewFg = "black"
 
 trashIcon = tk.PhotoImage(file="./assets/trash.png")
 trashButton = tk.Button(root, image=trashIcon)
@@ -128,15 +138,16 @@ darkModeButton.pack(padx=10, pady=10, anchor="nw")
 addFlightButton = tk.Button(root, text="Add Flight", command=onAddFlightClick, bg=backgroundColor, fg=textColor)
 addFlightButton.pack(padx=10, pady=10, anchor="center")
 
-flightTable = ttk.Treeview(root, columns=("Flight", "Arrival", "Departure", "Status", "Trash"), show="headings", style="Treeview")
+style = ttk.Style()
+#style.configure("Treeview", background=root.cget("bg"), foreground=textColor, fieldbackground=root.cget("bg"), rowheight=25)
+style.configure("Custom.Treeview", background=treeviewBg, foreground=treeviewFg)
+
+flightTable = ttk.Treeview(root, columns=("Flight", "Arrival", "Departure", "Status", "Trash"), show="headings", style="Custom.Treeview")
 flightTable.heading("Flight", text="Flight", anchor=tk.CENTER)
 flightTable.heading("Arrival", text="Arrival", anchor=tk.CENTER)
 flightTable.heading("Departure", text="Departure", anchor=tk.CENTER)
 flightTable.heading("Status", text="Status", anchor=tk.CENTER)
 flightTable.heading("Trash", image=trashIcon, anchor=tk.CENTER)
 flightTable.pack(padx=10, pady=10, anchor="center")
-
-style = ttk.Style()
-style.configure("Treeview", background=root.cget("bg"), foreground=textColor, fieldbackground=root.cget("bg"), rowheight=25)
 
 root.mainloop()
