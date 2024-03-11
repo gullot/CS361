@@ -11,10 +11,10 @@ def onLeave(event, deleteHoverLabel):
     deleteHoverLabel.place_forget()
 
 def onDarkModeClick(darkModeButton, addFlightButton):
-    global darkMode
-    darkMode = not darkMode
+    #global darkMode
+    Config.darkMode = not Config.darkMode
 
-    if darkMode:
+    if Config.darkMode:
         Config.root.configure(bg="#2E2E2E")
         buttonColor = "#404040"
         textColor = "white"

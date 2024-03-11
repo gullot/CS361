@@ -3,8 +3,8 @@ import tkinter as tk
 from tkinter import ttk
 from config import Config
 
-from flightOperations import onAddFlightClick, onDeleteFlightClick, addFlight
-from uiOperations import onDarkModeClick, onEnter, onLeave, popUpErr
+from flightOperations import onAddFlightClick, onDeleteFlightClick
+from uiOperations import onDarkModeClick, onEnter, onLeave
 
 #########################################################
 
@@ -32,12 +32,15 @@ trashButton = tk.Button(Config.root, image=trashIcon)
 
 deleteHoverLabel = tk.Label(Config.root, text="warning! this will delete a flight")
 trashButton.pack()
-trashButton.bind("<Enter>", onEnter)
-trashButton.bind("<Leave>", onLeave)
+trashButton.bind("<Enter>", lambda event: onEnter(event, trashButton, deleteHoverLabel))
+trashButton.bind("<Leave>", lambda event: onLeave(event, deleteHoverLabel))
 
-darkModeButton = tk.Button(Config.root, text="Dark Mode", command=onDarkModeClick, bg=backgroundColor, fg=textColor)
+darkModeButton = tk.Button(Config.root, text="Dark Mode", bg=backgroundColor, fg=textColor)
+darkModeButton.config(command=lambda: onDarkModeClick(darkModeButton, addFlightButton))
 darkModeButton.pack(padx=10, pady=10, anchor="nw")
-addFlightButton = tk.Button(Config.root, text="Add Flight", command=onAddFlightClick, bg=backgroundColor, fg=textColor)
+
+addFlightButton = tk.Button(Config.root, text="Add Flight", bg=backgroundColor, fg=textColor)
+addFlightButton.config(command=lambda: onAddFlightClick(flightTable))
 addFlightButton.pack(padx=10, pady=10, anchor="center")
 
 style = ttk.Style()
@@ -53,6 +56,6 @@ flightTable.heading("Trash", image=trashIcon, anchor=tk.CENTER)
 flightTable.column("Trash")
 flightTable.pack(padx=10, pady=10, anchor="center")
 
-flightTable.bind("<Button-1>", lambda event: onDeleteFlightClick(flightTable.identify_row(event.y)))
+flightTable.bind("<Button-1>", lambda event: onDeleteFlightClick(flightTable.identify_row(event.y), flightTable))
 
 Config.root.mainloop()

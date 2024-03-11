@@ -4,7 +4,7 @@ from config import Config
 import tkinter as tk
 from uiOperations import popUpErr
 
-def onAddFlightClick():
+def onAddFlightClick(flightTable):
     #open a new window
     flightWindow = tk.Toplevel(Config.root)
     flightWindow.title("Add a Flight")
@@ -17,7 +17,7 @@ def onAddFlightClick():
     flight.pack(padx=10, pady=10, anchor="center")
     flight.focus_set()
 
-    submitFlight = tk.Button(flightWindow, text="Add Flight", command=lambda: addFlight(flightWindow, flight.get()))
+    submitFlight = tk.Button(flightWindow, text="Add Flight", command=lambda: addFlight(flightWindow, flight.get(), flightTable))
     submitFlight.pack(pady=10)
 
 def addFlight(window, flight, flightTable):
