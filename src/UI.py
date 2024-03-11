@@ -56,6 +56,6 @@ flightTable.heading("Trash", image=trashIcon, anchor=tk.CENTER)
 flightTable.column("Trash")
 flightTable.pack(padx=10, pady=10, anchor="center")
 
-flightTable.bind("<Button-1>", lambda event: onDeleteFlightClick(flightTable.identify_row(event.y), flightTable))
+#flightTable.bind("<Button-1>", lambda event: onDeleteFlightClick(flightTable.identify_row(event.y), flightTable))
 
 Config.root.mainloop()

@@ -56,10 +56,13 @@ def addFlight(window, flight, flightTable):
     departure = data["flights"][0]["scheduled_out"]
     status = data["flights"][0]["status"]
 
-    flightTable.insert("", tk.END, values=(flight, arrival, departure, status)) #still need to add delete button in last column
+    index = flightTable.insert("", tk.END, values=(flight, arrival, departure, status, ""), tags=("row",))
+
+    deleteButton = tk.Button(flightTable, text="Delete", command=lambda idx=index: onDeleteFlightClick(flightTable, idx))
+    flightTable.set(index, "#5", deleteButton)
 
     #close window
     window.destroy()
 
-def onDeleteFlightClick(row, flightTable):
-    flightTable.delete(row)
+def onDeleteFlightClick(flightTable, index):
+    flightTable.delete(index)
