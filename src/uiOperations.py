@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from config import Config
+from datetime import datetime
 
 def onEnter(event, trashButton, deleteHoverLabel):
     #to display information on hovering
@@ -10,8 +11,8 @@ def onLeave(event, deleteHoverLabel):
     #remove hover label
     deleteHoverLabel.place_forget()
 
-def onDarkModeClick(darkModeButton, addFlightButton):
-    #global darkMode
+def onDarkModeClick(darkModeButton, addFlightButton, trashButton, titleLabel):
+
     Config.darkMode = not Config.darkMode
 
     if Config.darkMode:
@@ -23,7 +24,7 @@ def onDarkModeClick(darkModeButton, addFlightButton):
 
     else:
         Config.root.configure(bg="white")
-        buttonColor = "lightgray"
+        buttonColor = "white"
         textColor = "black"
         treeviewBg = "white"
         treeviewFg = "black"
@@ -31,6 +32,8 @@ def onDarkModeClick(darkModeButton, addFlightButton):
     #update widget colors
     darkModeButton.configure(bg=buttonColor, fg=textColor)
     addFlightButton.configure(bg=buttonColor, fg=textColor)
+    trashButton.configure(bg=buttonColor, fg=textColor)
+    titleLabel.configure(bg=buttonColor, fg=textColor)
     style = ttk.Style()
     style.configure("Custom.Treeview", background=treeviewBg, foreground=treeviewFg)  # Reconfigure Treeview style
     Config.root.update_idletasks()
@@ -42,3 +45,8 @@ def popUpErr(msg):
     label.pack(padx=10, pady=10)
     button = tk.Button(popUp, text="OK", command=popUp.destroy)
     button.pack(pady=10)
+
+def formatTime(timeStr):
+    dtObj = datetime.fromisoformat(timeStr[:-1])
+    formattedTime = dtObj.strftime("%Y-%m-%d %H:%M")
+    return formattedTime

@@ -8,22 +8,22 @@ from uiOperations import onDarkModeClick, onEnter, onLeave
 
 #########################################################################
 
+#dark mode off as default
+darkMode = False
+backgroundColor = "white"
+buttonColor = "white"
+textColor = "black"
+treeviewBg = "white"
+treeviewFg = "black"
+
 Config.root = tk.Tk()
 Config.root.configure(bg="white")
 Config.root.title("Welcome to the Flight Tracker Tool!")
 titleFrame = tk.Frame(Config.root)
 titleFrame.pack(pady=10)
-titleLabel = tk.Label(titleFrame, text="Click the buttons below to get started!")
+titleLabel = tk.Label(titleFrame, text="Click or hover over the buttons below to get started!", bg=backgroundColor)
 titleLabel.pack()
-Config.root.geometry("1200x600")
-
-#dark mode off as default
-darkMode = False
-backgroundColor = "white"
-buttonColor = "lightgray"
-textColor = "black"
-treeviewBg = "white"
-treeviewFg = "black"
+Config.root.geometry("900x500")
 
 trashIcon = tk.PhotoImage(file="./assets/trash.png")
 trashButton = tk.Button(Config.root, image=trashIcon, command=lambda: deleteFlight(flightTable))
@@ -33,8 +33,8 @@ trashButton.pack()
 trashButton.bind("<Enter>", lambda event: onEnter(event, trashButton, deleteHoverLabel))
 trashButton.bind("<Leave>", lambda event: onLeave(event, deleteHoverLabel))
 
-darkModeButton = tk.Button(Config.root, text="Dark Mode", bg=backgroundColor, fg=textColor)
-darkModeButton.config(command=lambda: onDarkModeClick(darkModeButton, addFlightButton))
+darkModeButton = tk.Button(Config.root, text="Toggle Dark Mode", bg=backgroundColor, fg=textColor)
+darkModeButton.config(command=lambda: onDarkModeClick(darkModeButton, addFlightButton, trashButton, titleLabel))
 darkModeButton.pack(padx=10, pady=10, anchor="nw")
 
 addFlightButton = tk.Button(Config.root, text="Add Flight", bg=backgroundColor, fg=textColor)

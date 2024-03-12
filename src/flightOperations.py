@@ -2,8 +2,7 @@ import json
 from time import sleep
 from config import Config
 import tkinter as tk
-from tkinter import ttk
-from uiOperations import popUpErr
+from uiOperations import popUpErr, formatTime
 
 def onAddFlightClick(flightTable):
     #open a new window
@@ -11,7 +10,7 @@ def onAddFlightClick(flightTable):
     flightWindow.title("Add a Flight")
     flightWindow.geometry("200x150")
 
-    label = tk.Label(flightWindow, text="Flight number: ")
+    label = tk.Label(flightWindow, text="Please enter a flight number: ")
     label.pack(padx=5, pady=5)
 
     flight = tk.Entry(flightWindow)
@@ -29,6 +28,22 @@ def addFlight(window, flight, flightTable):
 
     sleep(3)
 
+    arrival, departure, status = getRequest(window)
+
+    flightTable.insert("", tk.END, values=(flight, arrival, departure, status))
+
+    #close window
+    window.destroy()
+
+def deleteFlight(flightTable):
+    selected = flightTable.selection()
+    if selected:
+        flightTable.delete(selected)
+    else:
+        popUpErr("No flight selected to delete!")
+
+def getRequest(window):
+
     #help from https://www.geeksforgeeks.org/json-parsing-errors-in-python/
     with open("response.txt", "r") as flightDetails:
         try:
@@ -41,14 +56,12 @@ def addFlight(window, flight, flightTable):
     
     #check if microservice write "Error" as a key
     if "Error" in data:
-        #print("error in return from api")
         popUpErr("Error in return from API")
         window.destroy()
         return
     
     #check if flights is empty (problem with retrieval)
     if not data["flights"]:
-        #print("no data in flights key")
         popUpErr("No data in flights key")
         window.destroy()
         return
@@ -57,12 +70,7 @@ def addFlight(window, flight, flightTable):
     departure = data["flights"][0]["scheduled_out"]
     status = data["flights"][0]["status"]
 
-    flightTable.insert("", tk.END, values=(flight, arrival, departure, status))
+    arrival = formatTime(arrival)
+    departure = formatTime(departure)
 
-    #close window
-    window.destroy()
-
-def deleteFlight(flightTable):
-    selected = flightTable.selection()
-    if selected:
-        flightTable.delete(selected)
+    return arrival, departure, status
