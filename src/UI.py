@@ -25,21 +25,24 @@ titleLabel = tk.Label(titleFrame, text="Click or hover over the buttons below to
 titleLabel.pack()
 Config.root.geometry("900x500")
 
-trashIcon = tk.PhotoImage(file="./assets/trash.png")
-trashButton = tk.Button(Config.root, image=trashIcon, command=lambda: deleteFlight(flightTable))
+#create a frame to contain the delete and add flight buttons
+buttonFrame = tk.Frame(Config.root, bg=backgroundColor)
+buttonFrame.pack(padx=10, pady=10, anchor="center")
 
+addFlightButton = tk.Button(buttonFrame, text="Add Flight", bg=backgroundColor, fg=textColor)
+addFlightButton.config(command=lambda: onAddFlightClick(flightTable))
+addFlightButton.pack(side=tk.LEFT)
+
+trashIcon = tk.PhotoImage(file="./assets/trash.png")
+trashButton = tk.Button(buttonFrame, image=trashIcon, command=lambda: deleteFlight(flightTable))
 deleteHoverLabel = tk.Label(Config.root, text="warning! this will delete a flight")
-trashButton.pack()
+trashButton.pack(side=tk.LEFT, padx=10)
 trashButton.bind("<Enter>", lambda event: onEnter(event, trashButton, deleteHoverLabel))
 trashButton.bind("<Leave>", lambda event: onLeave(event, deleteHoverLabel))
 
 darkModeButton = tk.Button(Config.root, text="Toggle Dark Mode", bg=backgroundColor, fg=textColor)
-darkModeButton.config(command=lambda: onDarkModeClick(darkModeButton, addFlightButton, trashButton, titleLabel))
+darkModeButton.config(command=lambda: onDarkModeClick(darkModeButton, addFlightButton, trashButton, titleLabel, buttonFrame))
 darkModeButton.pack(padx=10, pady=10, anchor="nw")
-
-addFlightButton = tk.Button(Config.root, text="Add Flight", bg=backgroundColor, fg=textColor)
-addFlightButton.config(command=lambda: onAddFlightClick(flightTable))
-addFlightButton.pack(padx=10, pady=10, anchor="center")
 
 style = ttk.Style()
 #style.configure("Treeview", background=root.cget("bg"), foreground=textColor, fieldbackground=root.cget("bg"), rowheight=25)

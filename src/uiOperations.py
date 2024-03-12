@@ -11,7 +11,8 @@ def onLeave(event, deleteHoverLabel):
     #remove hover label
     deleteHoverLabel.place_forget()
 
-def onDarkModeClick(darkModeButton, addFlightButton, trashButton, titleLabel):
+def onDarkModeClick(darkModeButton, addFlightButton,
+                     trashButton, titleLabel, buttonFrame):
 
     Config.darkMode = not Config.darkMode
 
@@ -34,6 +35,7 @@ def onDarkModeClick(darkModeButton, addFlightButton, trashButton, titleLabel):
     addFlightButton.configure(bg=buttonColor, fg=textColor)
     trashButton.configure(bg=buttonColor, fg=textColor)
     titleLabel.configure(bg=buttonColor, fg=textColor)
+    buttonFrame.configure(bg=buttonColor)
     style = ttk.Style()
     style.configure("Custom.Treeview", background=treeviewBg, foreground=treeviewFg)  # Reconfigure Treeview style
     Config.root.update_idletasks()
