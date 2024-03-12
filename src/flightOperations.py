@@ -2,6 +2,7 @@ import json
 from time import sleep
 from config import Config
 import tkinter as tk
+from tkinter import ttk
 from uiOperations import popUpErr
 
 def onAddFlightClick(flightTable):
@@ -56,13 +57,12 @@ def addFlight(window, flight, flightTable):
     departure = data["flights"][0]["scheduled_out"]
     status = data["flights"][0]["status"]
 
-    index = flightTable.insert("", tk.END, values=(flight, arrival, departure, status, ""), tags=("row",))
-
-    deleteButton = tk.Button(flightTable, text="Delete", command=lambda idx=index: onDeleteFlightClick(flightTable, idx))
-    flightTable.set(index, "#5", deleteButton)
+    flightTable.insert("", tk.END, values=(flight, arrival, departure, status))
 
     #close window
     window.destroy()
 
-def onDeleteFlightClick(flightTable, index):
-    flightTable.delete(index)
+def deleteFlight(flightTable):
+    selected = flightTable.selection()
+    if selected:
+        flightTable.delete(selected)

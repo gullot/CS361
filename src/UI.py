@@ -3,10 +3,8 @@ import tkinter as tk
 from tkinter import ttk
 from config import Config
 
-from flightOperations import onAddFlightClick, onDeleteFlightClick
+from flightOperations import onAddFlightClick, deleteFlight
 from uiOperations import onDarkModeClick, onEnter, onLeave
-
-#########################################################
 
 #########################################################################
 
@@ -28,7 +26,7 @@ treeviewBg = "white"
 treeviewFg = "black"
 
 trashIcon = tk.PhotoImage(file="./assets/trash.png")
-trashButton = tk.Button(Config.root, image=trashIcon)
+trashButton = tk.Button(Config.root, image=trashIcon, command=lambda: deleteFlight(flightTable))
 
 deleteHoverLabel = tk.Label(Config.root, text="warning! this will delete a flight")
 trashButton.pack()
@@ -47,15 +45,11 @@ style = ttk.Style()
 #style.configure("Treeview", background=root.cget("bg"), foreground=textColor, fieldbackground=root.cget("bg"), rowheight=25)
 style.configure("Custom.Treeview", background=treeviewBg, foreground=treeviewFg)
 
-flightTable = ttk.Treeview(Config.root, columns=("Flight", "Arrival", "Departure", "Status", "Trash"), show="headings", style="Custom.Treeview")
+flightTable = ttk.Treeview(Config.root, columns=("Flight", "Arrival", "Departure", "Status"), show="headings", style="Custom.Treeview")
 flightTable.heading("Flight", text="Flight", anchor=tk.CENTER)
 flightTable.heading("Arrival", text="Arrival", anchor=tk.CENTER)
 flightTable.heading("Departure", text="Departure", anchor=tk.CENTER)
 flightTable.heading("Status", text="Status", anchor=tk.CENTER)
-flightTable.heading("Trash", image=trashIcon, anchor=tk.CENTER)
-flightTable.column("Trash")
 flightTable.pack(padx=10, pady=10, anchor="center")
-
-#flightTable.bind("<Button-1>", lambda event: onDeleteFlightClick(flightTable.identify_row(event.y), flightTable))
 
 Config.root.mainloop()
