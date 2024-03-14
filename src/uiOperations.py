@@ -13,7 +13,7 @@ def onLeave(event, deleteHoverLabel):
 
 def onDarkModeClick(darkModeButton, addFlightButton,
                      trashButton, titleLabel, buttonFrame):
-    """setting up toggling of dark mode"""
+    """method for toggling dark mode"""
 
     Config.darkMode = not Config.darkMode
 

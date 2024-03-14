@@ -3,6 +3,7 @@ from time import sleep
 from config import Config
 import tkinter as tk
 from uiOperations import popUpErr, formatTime
+import tkinter.messagebox as messagebox
 
 def onAddFlightClick(flightTable):
     """opens a window for flight entry input"""
@@ -39,13 +40,15 @@ def addFlight(window, flight, flightTable):
 def deleteFlight(flightTable):
     """removes a selected flight from the table"""
     selected = flightTable.selection()
-    if selected:
-        flightTable.delete(selected)
-    else:
-        popUpErr("No flight selected to delete!")
+    result = messagebox.askyesno("Confirm Deletion", "Are you sure you want to delete the selected flight?")
+    if result:
+        if selected:
+            flightTable.delete(selected)
+        else:
+            popUpErr("No flight selected to delete!")
 
-def getRequest(window):
-    """retrieves the response from the microservice"""
+def errorCheck(window):
+    """performs error handling for the microservice response"""
 
     #help from https://www.geeksforgeeks.org/json-parsing-errors-in-python/
     with open("response.txt", "r") as flightDetails:
@@ -53,22 +56,30 @@ def getRequest(window):
             data = json.load(flightDetails)
         except json.JSONDecodeError as e:
             popUpErr(e)
-            #print("inval syntax:", e)
             window.destroy()
             return
     
     #check if microservice write "Error" as a key
     if "Error" in data:
-        popUpErr("Error in return from API")
+        popUpErr("Error in return from API!")
         window.destroy()
         return
     
     #check if flights is empty (problem with retrieval)
     if not data["flights"]:
-        popUpErr("No data in flights key")
+        popUpErr("No flight exists with the input number!")
         window.destroy()
         return
+    
+    return data
 
+def getRequest(window):
+    """retrieves the response from the microservice"""
+
+    #perform error handling
+    data = errorCheck(window)    
+
+    #retrieve information
     arrival = data["flights"][0]["scheduled_in"]
     departure = data["flights"][0]["scheduled_out"]
     status = data["flights"][0]["status"]
