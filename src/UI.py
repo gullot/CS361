@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 from config import Config
 
-from flightOperations import onAddFlightClick, deleteFlight
+from flightOperations import onAddFlightClick, deleteFlight, undoDelete
 from uiOperations import onDarkModeClick, onEnter, onLeave
 
 #dark mode off as default
@@ -39,8 +39,12 @@ trashButton.pack(side=tk.LEFT, padx=10)
 trashButton.bind("<Enter>", lambda event: onEnter(event, trashButton, deleteHoverLabel))
 trashButton.bind("<Leave>", lambda event: onLeave(event, deleteHoverLabel))
 
+undoButton = tk.Button(buttonFrame, text="Undo Delete", bg=backgroundColor, fg=textColor)
+undoButton.config(command=lambda: undoDelete(flightTable))
+undoButton.pack(side=tk.LEFT, padx=5)
+
 darkModeButton = tk.Button(Config.root, text="Toggle Dark Mode", bg=backgroundColor, fg=textColor)
-darkModeButton.config(command=lambda: onDarkModeClick(darkModeButton, addFlightButton, trashButton, titleLabel, buttonFrame))
+darkModeButton.config(command=lambda: onDarkModeClick(darkModeButton, addFlightButton, trashButton, titleLabel, buttonFrame, undoButton))
 darkModeButton.pack(padx=10, pady=10, anchor="nw")
 
 #set up the table

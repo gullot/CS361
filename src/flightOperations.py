@@ -43,9 +43,19 @@ def deleteFlight(flightTable):
     result = messagebox.askyesno("Confirm Deletion", "Are you sure you want to delete the selected flight?")
     if result:
         if selected:
+            deleted = flightTable.item(selected, "values")
+            Config.lastDeletion = deleted
             flightTable.delete(selected)
         else:
             popUpErr("No flight selected to delete!")
+
+def undoDelete(flightTable):
+    """restores the last deleted flight to the table"""
+    if Config.lastDeletion:
+        flightTable.insert("", tk.END, values=Config.lastDeletion)
+        Config.lastDeletion = None
+    else:
+        popUpErr("No flight recently deleted!")
 
 def errorCheck(window):
     """performs error handling for the microservice response"""

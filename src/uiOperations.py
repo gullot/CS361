@@ -12,7 +12,7 @@ def onLeave(event, deleteHoverLabel):
     deleteHoverLabel.place_forget()
 
 def onDarkModeClick(darkModeButton, addFlightButton,
-                     trashButton, titleLabel, buttonFrame):
+                     trashButton, titleLabel, buttonFrame, undoButton):
     """method for toggling dark mode"""
 
     Config.darkMode = not Config.darkMode
@@ -35,6 +35,7 @@ def onDarkModeClick(darkModeButton, addFlightButton,
     darkModeButton.configure(bg=buttonColor, fg=textColor)
     addFlightButton.configure(bg=buttonColor, fg=textColor)
     trashButton.configure(bg=buttonColor, fg=textColor)
+    undoButton.configure(bg=buttonColor, fg=textColor)
     titleLabel.configure(bg=buttonColor, fg=textColor)
     buttonFrame.configure(bg=buttonColor)
     style = ttk.Style()
