@@ -4,15 +4,16 @@ from config import Config
 from datetime import datetime
 
 def onEnter(event, trashButton, deleteHoverLabel):
-    #to display information on hovering
+    """to display information on hovering"""
     deleteHoverLabel.place(x=trashButton.winfo_rootx(), y=trashButton.winfo_rooty())
 
 def onLeave(event, deleteHoverLabel):
-    #remove hover label
+    """to remove hover label"""
     deleteHoverLabel.place_forget()
 
 def onDarkModeClick(darkModeButton, addFlightButton,
                      trashButton, titleLabel, buttonFrame):
+    """setting up toggling of dark mode"""
 
     Config.darkMode = not Config.darkMode
 
@@ -41,6 +42,7 @@ def onDarkModeClick(darkModeButton, addFlightButton,
     Config.root.update_idletasks()
 
 def popUpErr(msg):
+    """for use across the program to display error messages"""
     popUp = tk.Toplevel()
     popUp.title("Error")
     label = tk.Label(popUp, text=msg)
@@ -49,6 +51,7 @@ def popUpErr(msg):
     button.pack(pady=10)
 
 def formatTime(timeStr):
+    """to format the date"""
     dtObj = datetime.fromisoformat(timeStr[:-1])
     formattedTime = dtObj.strftime("%Y-%m-%d %H:%M")
     return formattedTime

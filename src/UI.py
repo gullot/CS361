@@ -6,8 +6,6 @@ from config import Config
 from flightOperations import onAddFlightClick, deleteFlight
 from uiOperations import onDarkModeClick, onEnter, onLeave
 
-#########################################################################
-
 #dark mode off as default
 darkMode = False
 backgroundColor = "white"
@@ -16,6 +14,7 @@ textColor = "black"
 treeviewBg = "white"
 treeviewFg = "black"
 
+#set up the main window
 Config.root = tk.Tk()
 Config.root.configure(bg="white")
 Config.root.title("Welcome to the Flight Tracker Tool!")
@@ -25,7 +24,7 @@ titleLabel = tk.Label(titleFrame, text="Click or hover over the buttons below to
 titleLabel.pack()
 Config.root.geometry("900x500")
 
-#create a frame to contain the delete and add flight buttons
+#button set up
 buttonFrame = tk.Frame(Config.root, bg=backgroundColor)
 buttonFrame.pack(padx=10, pady=10, anchor="center")
 
@@ -44,10 +43,9 @@ darkModeButton = tk.Button(Config.root, text="Toggle Dark Mode", bg=backgroundCo
 darkModeButton.config(command=lambda: onDarkModeClick(darkModeButton, addFlightButton, trashButton, titleLabel, buttonFrame))
 darkModeButton.pack(padx=10, pady=10, anchor="nw")
 
+#set up the table
 style = ttk.Style()
-#style.configure("Treeview", background=root.cget("bg"), foreground=textColor, fieldbackground=root.cget("bg"), rowheight=25)
 style.configure("Custom.Treeview", background=treeviewBg, foreground=treeviewFg)
-
 flightTable = ttk.Treeview(Config.root, columns=("Flight", "Arrival", "Departure", "Status"), show="headings", style="Custom.Treeview")
 flightTable.heading("Flight", text="Flight", anchor=tk.CENTER)
 flightTable.heading("Arrival", text="Arrival", anchor=tk.CENTER)
@@ -55,4 +53,5 @@ flightTable.heading("Departure", text="Departure", anchor=tk.CENTER)
 flightTable.heading("Status", text="Status", anchor=tk.CENTER)
 flightTable.pack(padx=10, pady=10, anchor="center")
 
+#run UI
 Config.root.mainloop()

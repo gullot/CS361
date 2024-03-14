@@ -5,7 +5,7 @@ import tkinter as tk
 from uiOperations import popUpErr, formatTime
 
 def onAddFlightClick(flightTable):
-    #open a new window
+    """opens a window for flight entry input"""
     flightWindow = tk.Toplevel(Config.root)
     flightWindow.title("Add a Flight")
     flightWindow.geometry("200x150")
@@ -21,6 +21,7 @@ def onAddFlightClick(flightTable):
     submitFlight.pack(pady=10)
 
 def addFlight(window, flight, flightTable):
+    """handles interaction with the flightaware microservice upon Add Flight click"""
 
     #send request to microservice for information regarding flight
     with open("request.txt", "w") as pipeRequest:
@@ -36,6 +37,7 @@ def addFlight(window, flight, flightTable):
     window.destroy()
 
 def deleteFlight(flightTable):
+    """removes a selected flight from the table"""
     selected = flightTable.selection()
     if selected:
         flightTable.delete(selected)
@@ -43,6 +45,7 @@ def deleteFlight(flightTable):
         popUpErr("No flight selected to delete!")
 
 def getRequest(window):
+    """retrieves the response from the microservice"""
 
     #help from https://www.geeksforgeeks.org/json-parsing-errors-in-python/
     with open("response.txt", "r") as flightDetails:
